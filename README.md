@@ -9,7 +9,7 @@ Dyer, N., Kastrisios, C., & De Floriani, L. (2021). Label-Based Generalization o
 ### Installation ###
 Once in the root of the repository type from the command line:
 ```
-python -m setup.py install  # installs to current Python environment (including required libraries)
+python -m setup install  # installs to current Python environment (including required libraries)
 ```
 You should then be able to execute the program as such:
 ```
