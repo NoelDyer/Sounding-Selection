@@ -30,7 +30,7 @@ Example data file formats can be found in the ```data``` directory.
 **Notes:**
 <p>When a survey polygon is provided, the triangulation performed for validation (see reference paper) is constrained to the polygon. If it is not provided, the triangulation is Delaunay.</p>
 <p>A default horizontal/vertical spacing of 0.75 mm to the scale is used unless a different value is provided.</p>
-<p>An output log file is also created during execution.</p>
+An output log file is also created during execution.
 
 ### Requirements ###
 + Triangle (https://rufat.be/triangle/)
