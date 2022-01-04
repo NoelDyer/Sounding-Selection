@@ -7,24 +7,33 @@ Dyer, N., Kastrisios, C., & De Floriani, L. (2021). Label-Based Generalization o
 ### Installation ###
 Once in the root of the repository type from the command line:
 ```
-python setup.py install  # installs to current Python environment
+python setup.py install  # installs to current Python environment (including required libraries)
 ```
-This will install the necessary libraries.
+You should then be able to execute the program as such:
+```
+hss -i path\to\data\Bathymetry_xyz.txt -s 25000 -m path\to\data\Bathymetry_Boundary.txt
+```
+Example data file formats can be found in the
+```data```
+directory.
 ### Parameters Description ###
 ```
 -i <inputfile> -s <scale> -m <m_qual> -x <horizontal_spacing> -y <vertical_spacing>
 ```
 ```-i```
-Input Soundings File | Required | X,Y,Z Text File Format</br>
+*Input Soundings File* | **Required** | X,Y,Z Text File Format</br>
 ```-s```
-Scale | Required | Integer</br>
+*Scale* | **Required** | Integer</br>
 ```-m```
-Survey Boundary (M_QUAL) Polygon | Optional | Polygon WKT in Text File Format</br>
+*Survey Boundary (M_QUAL) Polygon* | **Optional** | Polygon WKT in Text File Format</br>
 ```-x```
-Horizontal Spacing Between Labels | Optional | Float</br>
+*Horizontal Spacing Between Labels* | **Optional** | Float</br>
 ```-y```
-Vertical Spacing Between Labels | Optional | Float</br>
+*Vertical Spacing Between Labels* | **Optional** | Float</br>
 
+**Notes:**
+<p>When a survey polygon is provided, the triangulation performed for validation (see reference paper) is constrained to the polygon. If it is not provided, the triangulation is Delaunay.</p>
+<p>A default horizontal/vertical spacing of 0.75 mm to the scale is used unless a different value is provided.</p>
 
 ### Requirements ###
 + Triangle (https://rufat.be/triangle/)
