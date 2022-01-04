@@ -13,9 +13,7 @@ You should then be able to execute the program as such:
 ```
 hss -i path\to\data\Bathymetry_xyz.txt -s 25000 -m path\to\data\Bathymetry_Boundary.txt
 ```
-Example data file formats can be found in the
-```data```
-directory.
+Example data file formats can be found in the ```data``` directory.
 ### Parameters Description ###
 ```
 -i <inputfile> -s <scale> -m <m_qual> -x <horizontal_spacing> -y <vertical_spacing>
@@ -34,6 +32,7 @@ directory.
 **Notes:**
 <p>When a survey polygon is provided, the triangulation performed for validation (see reference paper) is constrained to the polygon. If it is not provided, the triangulation is Delaunay.</p>
 <p>A default horizontal/vertical spacing of 0.75 mm to the scale is used unless a different value is provided.</p>
+<p>An output log file is also created during execution: ```hss_log```.
 
 ### Requirements ###
 + Triangle (https://rufat.be/triangle/)
