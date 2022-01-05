@@ -1,0 +1,3 @@
+[console_scripts]
+sounding_selection = main:main
+
