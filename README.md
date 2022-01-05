@@ -11,7 +11,7 @@ Once in the root of the repository type from the command line:
 ```
 python setup.py install  # installs to current Python environment (including required libraries)
 ```
-You should then be able to execute the program as such:
+You should then be able to execute the program from the command line as such:
 ```
 sounding_selection -i path\to\data\Bathymetry_xyz.txt -s 25000 -m path\to\data\Bathymetry_Boundary.txt
 ```
