@@ -1,4 +1,4 @@
-# Hydrographic Sounding Selection #
+# Sounding Selection #
 Hydrographic sounding selection is the process of generalizing high-resolution bathymetry data to produce a shoal-biased and dense, yet manageable, subset of soundings without label over-plot that can support nautical chart compilation or bathymetric modelling. This algorithm improves over existing methods by generalizing bathymetry using the physical dimensions of symbolized depth values at scale.
 
 ### Reference Paper ###
