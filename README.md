@@ -13,7 +13,7 @@ python -m setup install  # installs to current Python environment (including req
 ```
 You should then be able to execute the program as such:
 ```
-hss -i path\to\data\Bathymetry_xyz.txt -s 25000 -m path\to\data\Bathymetry_Boundary.txt
+soundingselection -i path\to\data\Bathymetry_xyz.txt -s 25000 -m path\to\data\Bathymetry_Boundary.txt
 ```
 Example data file formats can be found in the ```data``` directory.
 
