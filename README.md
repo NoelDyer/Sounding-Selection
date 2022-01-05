@@ -7,7 +7,7 @@ Dyer, N., Kastrisios, C., & De Floriani, L. (2021). Label-Based Generalization o
 **Note:** Several enhancments have been implemented to eliminate remaining functionality constraint violations.
 
 ### Installation ###
-Once in the root of the repository type from the command line:
+Once in the root of the repository, enter into the command line:
 ```
 python setup.py install  # installs to current Python environment (including required libraries)
 ```
