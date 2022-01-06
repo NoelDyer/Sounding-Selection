@@ -76,10 +76,10 @@ def main():
     for attempts in range(attempt_limit):
         log.debug('\t--Mesh Iteration Count: ' + str(attempts + 1))
         try:
-            if mqual is None:
+            if mqual is None:  # Delaunay
                 tri = writer.triangulate_xyz(generalized_soundings)
                 break
-            else:
+            else:  # Constrained Delaunay
                 tri = writer.triangulate_xyz_constrained(generalized_soundings, m_qual_file)
                 break
         except RuntimeError as e:
@@ -142,10 +142,10 @@ def main():
             for attempts in range(attempt_limit):
                 log.debug('\t--Mesh Iteration Count: ' + str(attempts + 1))
                 try:
-                    if mqual is None:
+                    if mqual is None:  # Delaunay
                         tri = writer.triangulate_xyz(generalized_soundings)
                         break
-                    else:
+                    else:  # Constrained Delaunay
                         tri = writer.triangulate_xyz_constrained(generalized_soundings, m_qual_file)
                         break
                 except RuntimeError as e:
