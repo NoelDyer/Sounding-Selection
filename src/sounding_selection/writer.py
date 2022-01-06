@@ -19,7 +19,7 @@ class Writer(object):
         outfile_wkt.close()
         return
 
-    # Constrained; Python wrapper of Triangle (Shechuck, 1996)
+    # Constrained Delaunay; Python wrapper of Triangle (Shechuck, 1996)
     def triangulate_xyz_constrained(self, xyz_list, mqual_wkt):
         soundings = [[v.get_x(), v.get_y(),  v.get_z()] for v in xyz_list]
 
@@ -59,11 +59,10 @@ class Writer(object):
 
         return triangulation
 
-    # Non-constrained; Python wrapper of Triangle (Shechuck, 1996)
+    # Non-constrained Delaunay; Python wrapper of Triangle (Shechuck, 1996)
     def triangulate_xyz(self, xyz_list):
-        soundings = [[v.get_x(), v.get_y(), v.get_z()] for v in xyz_list]
-        xy_list = [z[0:2] for z in soundings]
-
+        xy_list = [[v.get_x(), v.get_y()] for v in xyz_list]
+        
         triangulation = triangle.triangulate({'vertices': xy_list})
 
         return triangulation
