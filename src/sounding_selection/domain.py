@@ -49,15 +49,6 @@ class Domain(object):
 
         return node_rectangle.contains(polygon)
 
-    def polygon_touches(self, polygon):
-        # polygon = Polygon(vertex_list)
-        node_rectangle = Polygon([(self.__min.get_x(), self.__min.get_y()),
-                                  (self.__min.get_x(), self.__max.get_y()),
-                                  (self.__max.get_x(), self.__max.get_y()),
-                                  (self.__max.get_x(), self.__min.get_y())])
-
-        return node_rectangle.touches(polygon)
-
     def coord_in_range(self, c, min_c, max_c, abs_max_c):
         if max_c == abs_max_c:
             if max_c < c:
