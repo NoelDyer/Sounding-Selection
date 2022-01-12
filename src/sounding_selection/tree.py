@@ -1,6 +1,6 @@
 from sounding_selection.node import Node
 from sounding_selection.characterdimensions import *
-from shapely.geometry import Point as Shapely_Point
+from shapely.geometry import Point
 
 
 class Tree(object):
@@ -53,7 +53,7 @@ class Tree(object):
                     for v_id in node.get_vertices():
                         v = point_set.get_vertex(v_id)
                         if v != target_v:
-                            s_point = Shapely_Point(v.get_x(), v.get_y())
+                            s_point = Point(v.get_x(), v.get_y())
                             if search_window.intersects(s_point):
                                 target_label = get_character_dimensions(target_v, scale, h_spacing, v_spacing)[1]
                                 v_label = get_character_dimensions(v, scale, h_spacing, v_spacing)[1]
@@ -88,7 +88,7 @@ class Tree(object):
                 else:
                     for v_id in node.get_vertices():
                         v = source_point_set.get_vertex(v_id)
-                        s_point = Shapely_Point(v.get_x(), v.get_y())
+                        s_point = Point(v.get_x(), v.get_y())
                         if polygon.intersects(s_point):
                             point_list.append(v)
 
