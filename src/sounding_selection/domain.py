@@ -32,7 +32,6 @@ class Domain(object):
         return True
 
     def polygon_intersect(self, polygon):
-        # polygon = Polygon(vertex_list)
         node_rectangle = Polygon([(self.__min.get_x(), self.__min.get_y()),
                                   (self.__min.get_x(), self.__max.get_y()),
                                   (self.__max.get_x(), self.__max.get_y()),
@@ -41,7 +40,6 @@ class Domain(object):
         return polygon.intersects(node_rectangle)
 
     def polygon_contains(self, polygon):
-        # polygon = Polygon(vertex_list)
         node_rectangle = Polygon([(self.__min.get_x(), self.__min.get_y()),
                                   (self.__min.get_x(), self.__max.get_y()),
                                   (self.__max.get_x(), self.__max.get_y()),
