@@ -78,7 +78,7 @@ class Tree(object):
                         self.generalize(node.get_son(i), s_label, s_domain, target_v, point_set, deletes, scale,
                                         h_spacing, v_spacing)
 
-    def get_points_in_polygon(self, node, node_label, node_domain, polygon, source_point_set, point_list, scale):
+    def get_points_in_polygon(self, node, node_label, node_domain, polygon, source_point_set, point_list):
         if node is None:
             return
         else:
@@ -99,8 +99,8 @@ class Tree(object):
                     s_label, s_domain = node.compute_son_label_and_domain(i, node_label, node_domain, mid_point)
                     if s_domain.polygon_contains(polygon):
                         self.get_points_in_polygon(node.get_son(i), s_label, s_domain, polygon, source_point_set,
-                                                   point_list, scale)
+                                                   point_list)
                         break
                     elif s_domain.polygon_intersect(polygon):
                         self.get_points_in_polygon(node.get_son(i), s_label, s_domain, polygon, source_point_set,
-                                                   point_list, scale)
+                                                   point_list)
