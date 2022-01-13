@@ -23,7 +23,7 @@ def validate_functionality_constraint(generalized_tin, source_tree, source_point
         if len(z_vals) > 0:
             point_list = list()
             source_tree.get_points_in_polygon(source_tree.get_root(), 0, source_point_set.get_domain(),
-                                              Polygon(triangle), source_point_set, point_list, scale)
+                                              Polygon(triangle), source_point_set, point_list)
 
             point_list[:] = [k for k in point_list if math.isnan(k.get_z()) is False]
 
@@ -49,7 +49,7 @@ def validate_legibility_constraint(generalized_soundings, generalized_tree, gene
         point_list = list()
 
         generalized_tree.get_points_in_polygon(generalized_tree.get_root(), 0, generalized_point_set.get_domain(),
-                                               search_window, generalized_point_set, point_list, scale)
+                                               search_window, generalized_point_set, point_list)
 
         point_list[:] = [k for k in point_list if math.isnan(k.get_z()) is False]
 
