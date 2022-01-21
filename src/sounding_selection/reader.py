@@ -4,6 +4,7 @@ import csv
 import shapely
 from shapely import wkt
 from shapely.ops import unary_union
+from shapely.geometry import Polygon, MultiPolygon
 from sounding_selection.vertex import Vertex
 from sounding_selection.pointset import PointSet
 from sounding_selection.tin import TIN
@@ -23,7 +24,8 @@ class Reader(object):
         try:
             options, remainder = getopt.getopt(sys.argv[1:], "hi:s:m:x:y:")
         except getopt.GetoptError:
-            print(sys.argv[0], ' -i <inputfile> -s <scale> -m <m_qual> -x <horizontal_spacing> -y <vertical_spacing>')
+            print(sys.argv[0], ' -i <inputfile> -s <scale> -m <m_qual> -x <horizontal_spacing>'
+                               ' -y <vertical_spacing>')
             sys.exit(2)
         for opt, arg in options:
             if opt == '-h':
@@ -80,24 +82,32 @@ class Reader(object):
         wkt_file.close()
 
         wkt = shapely.wkt.loads(wkt_string)
+        dissolve_wkt = unary_union(wkt)
 
-        poly = unary_union(wkt)
+        if dissolve_wkt.geom_type == 'MultiPolygon':
+            poly = MultiPolygon(dissolve_wkt)
+        elif dissolve_wkt.geom_type == 'Polygon':
+            poly = Polygon(dissolve_wkt)
+        else:
+            log.critical('Provide Valid M_QUAL Polygon')
+            sys.exit()
 
         return poly
 
-    def read_triangulation(self, triangulation, soundings_list):
-        vertices = triangulation['vertices'].tolist()
-        triangles = triangulation['triangles'].tolist()
+    def read_triangulation(self, triangulation, vertex_list):
+        vertices = triangulation['vertices']
+        triangles = triangulation['triangles']
 
-        xy_list = [[float(v.get_x()), float(v.get_y())] for v in soundings_list]
+        xy_list = [[float(v.get_x()), float(v.get_y())] for v in vertex_list]
 
         tin = TIN()
         for index, value in enumerate(vertices):
             if [float(value[0]), float(value[1])] in xy_list:
                 index = xy_list.index([float(value[0]), float(value[1])])
-                sounding = soundings_list[index]
+                sounding = vertex_list[index]
                 v = Vertex(float(sounding.get_x()), float(sounding.get_y()), float(sounding.get_z()))
             else:
+                log.error('Vertex: {}, {} Not Present in Source Soundings'.format(str(value[0]), str(value[1])))
                 v = Vertex(float(value[0]), float(value[1]), float('NaN'))
 
             tin.add_vertex(v)
