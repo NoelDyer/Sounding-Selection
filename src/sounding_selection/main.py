@@ -1,12 +1,13 @@
 import datetime
 
+from sounding_selection.utilities import *
 from sounding_selection.reader import Reader
 from sounding_selection.writer import Writer
 from sounding_selection.tree import Tree
-from timeit import default_timer as timer
 from sounding_selection.validation import *
 from sounding_selection.logger import log
-from shapely.geometry import Point as Point
+from shapely.geometry import Point
+from timeit import default_timer as timer
 
 
 def main():
@@ -21,11 +22,6 @@ def main():
     log.info('-Reading Source Soundings File')
     source_point_set = reader.read_xyz_file(source_soundings)
 
-    # Read M_QUAL into polygon object
-    if mqual is not None:
-        log.info('-Reading M_QUAL File')
-        m_qual_file = reader.read_wkt_file(mqual)
-
     # Initialize Tree class
     log.info('-Building PR-Quadtree')
     capacity = int(source_point_set.get_vertices_num() * 0.0004)
@@ -35,6 +31,28 @@ def main():
     # Build PR-quadtree of source points
     source_tree.build_point_tree(source_point_set)
     validation_source_tree.build_point_tree(source_point_set)  # used later for validation
+
+    # Read M_QUAL into polygon object and simplify; store boundary points for triangulation process during validation
+    if mqual is not None:
+        log.info('-Processing M_QUAL File')
+        mqual_wkt = reader.read_wkt_file(mqual)
+
+        log.info('\t-Simplifying M_QUAL Boundary')
+        source_tri = triangulate(source_point_set.get_all_vertices())
+        simplified_mqual = simplify_mqual(source_tri, mqual_wkt)
+        # writer.write_wkt_file('Simplified_MQUAL.txt', simplified_mqual)
+
+        log.info('\t-Removing Polygon Holes')
+        m_qual_poly = fill_poly_gaps(simplified_mqual)
+        # writer.write_wkt_file('Gap_Filled_MQUAL.txt', m_qual_poly)
+
+        log.info('\t-Extracting Boundary Points')
+        boundary_vertices, boundary_idx = get_boundary_points(m_qual_poly, source_point_set, source_tree)
+        # writer.write_xyz_file('M_QUAL_Boundarypoints', boundary_vertices)
+
+    else:
+        boundary_vertices = None
+        boundary_idx = None
 
     # Create list to store generalized soundings
     generalized_soundings = list()
@@ -47,7 +65,7 @@ def main():
     log.info('-Processing Label-Based Generalization')
     # Iterate through sorted point set
     while len(sorted_points) > 0:
-        deletes = []
+        deletes = list()
         source_tree.generalize(source_tree.get_root(), 0, source_point_set.get_domain(), sorted_points[0],
                                source_point_set, deletes, scale, horiz_spacing, vert_spacing)
         # Delete generalized soundings from sorted points list
@@ -71,34 +89,20 @@ def main():
     # Evaluate output against cartographic constraints
     log.info('-Evaluating Cartographic Constraint Violations')
 
-    # Triangulate generalized soundings; Triangle can be buggy with -p switch, try again if it fails the first time
-    attempt_limit = 5
-    for attempts in range(attempt_limit):
-        log.debug('\t--Mesh Iteration Count: ' + str(attempts + 1))
-        try:
-            if mqual is None:  # Delaunay
-                tri = writer.triangulate_xyz(generalized_soundings)
-                break
-            else:  # Constrained Delaunay
-                tri = writer.triangulate_xyz_constrained(generalized_soundings, m_qual_file)
-                break
-        except RuntimeError as e:
-            if attempts + 1 < attempt_limit:
-                continue
-            else:
-                log.error('-Error in Mesh Construction, Try Again Without M_QUAL.')
-                raise
+    # Triangulate generalized soundings
+    tri = triangulate(generalized_soundings, boundary_vertices, boundary_idx)
 
     # Read tin into class
-    generalized_tin = reader.read_triangulation(tri, generalized_soundings)
+    combined = generalized_soundings + boundary_vertices
+    generalized_tin = reader.read_triangulation(tri, combined)
     out_name = str(source_soundings).split('.')[0] + '_Generalized'
     writer.write_tin_file(generalized_tin, out_name + '_Initial_TIN')
 
-    # Evaluate functionality (safety) constraint
+    # First evaluation of functionality (safety) constraint
     functionality_violations = validate_functionality_constraint(generalized_tin, validation_source_tree,
                                                                  source_point_set, scale, horiz_spacing, vert_spacing)
 
-    # Evaluate legibility constraint
+    # First evaluation of legibility constraint
     legibility_violations = validate_legibility_constraint(generalized_soundings, source_tree, source_point_set, scale,
                                                            horiz_spacing, vert_spacing)
 
@@ -122,7 +126,7 @@ def main():
             while i < len(generalized_soundings):
                 target_sounding = generalized_soundings[i]
                 target_label = get_character_dimensions(target_sounding, scale, horiz_spacing, vert_spacing)[1]
-                violation_in_label = []
+                violation_in_label = list()
                 for func_violation in functionality_violations:
                     violation_point = Point(func_violation.get_x(), func_violation.get_y())
                     if violation_point.intersects(target_label):
@@ -137,27 +141,12 @@ def main():
 
                 i += 1
 
-            # Triangle can be buggy with -p switch, try again if it fails the first time
-            attempt_limit = 5
-            for attempts in range(attempt_limit):
-                log.debug('\t--Mesh Iteration Count: ' + str(attempts + 1))
-                try:
-                    if mqual is None:  # Delaunay
-                        tri = writer.triangulate_xyz(generalized_soundings)
-                        break
-                    else:  # Constrained Delaunay
-                        tri = writer.triangulate_xyz_constrained(generalized_soundings, m_qual_file)
-                        break
-                except RuntimeError as e:
-                    if attempts + 1 < attempt_limit:
-                        continue
-                    else:
-                        log.error('-Error in Mesh Construction, Try Again Without M_QUAL.')
-                        raise
+            # Re-triangulate updated generalized soundings
+            tri = triangulate(generalized_soundings, boundary_vertices, boundary_idx)
 
-            # Read tin into class
-            generalized_tin = reader.read_triangulation(tri, generalized_soundings)
-
+            # Iteration of functionality (safety) constraint evaluation
+            combined = generalized_soundings + boundary_vertices
+            generalized_tin = reader.read_triangulation(tri, combined)
             functionality_violations = validate_functionality_constraint(generalized_tin, validation_source_tree,
                                                                          source_point_set, scale, horiz_spacing,
                                                                          vert_spacing)
@@ -207,6 +196,7 @@ def main():
     writer.write_tin_file(generalized_tin, out_name + '_Final_TIN')
 
     log.info('-Hydrographic Sounding Selection Complete')
+
     return
 
 
