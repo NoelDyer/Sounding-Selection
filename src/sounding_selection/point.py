@@ -1,7 +1,7 @@
 class Point(object):
-    """Creates Class Point."""
+    """ Creates Class Point. """
     def __init__(self, x=0, y=0):
-        """Defines x and y variables"""
+        """ Defines x and y Variables. """
         self.__coords = [x, y]
 
     # get functions series
