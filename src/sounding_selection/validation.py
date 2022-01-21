@@ -1,6 +1,5 @@
 from sounding_selection.characterdimensions import get_character_dimensions
 from shapely.geometry import Polygon
-import math
 
 
 def validate_functionality_constraint(generalized_tin, source_tree, source_point_set, scale, h_spacing, v_spacing):
@@ -18,21 +17,15 @@ def validate_functionality_constraint(generalized_tin, source_tree, source_point
             z_vals.append(point)
             triangle.append([point.get_x(), point.get_y()])
 
-        z_vals[:] = [z for z in z_vals if math.isnan(z.get_z()) is False]
+        point_list = list()
+        source_tree.get_points_in_polygon(source_tree.get_root(), 0, source_point_set.get_domain(),
+                                          Polygon(triangle), source_point_set, point_list)
 
-        if len(z_vals) > 0:
-            point_list = list()
-            source_tree.get_points_in_polygon(source_tree.get_root(), 0, source_point_set.get_domain(),
-                                              Polygon(triangle), source_point_set, point_list)
-
-            point_list[:] = [k for k in point_list if math.isnan(k.get_z()) is False]
-
-            if len(point_list) > 0:
-                shallow_in_triangle = sorted(point_list, key=lambda k: k.get_z())[0]
-                shallow_z = sorted(z_vals, key=lambda k: k.get_z())[0]
-                if get_character_dimensions(shallow_in_triangle, scale, h_spacing, v_spacing)[2] <\
-                   get_character_dimensions(shallow_z, scale, h_spacing, v_spacing)[2]:
-                    safety_violations.append(shallow_in_triangle)
+        shallow_in_triangle = sorted(point_list, key=lambda k: k.get_z())[0]
+        shallow_z = sorted(z_vals, key=lambda k: k.get_z())[0]
+        if get_character_dimensions(shallow_in_triangle, scale, h_spacing, v_spacing)[2] < \
+           get_character_dimensions(shallow_z, scale, h_spacing, v_spacing)[2]:
+            safety_violations.append(shallow_in_triangle)
 
     return safety_violations
 
@@ -50,8 +43,6 @@ def validate_legibility_constraint(generalized_soundings, generalized_tree, gene
 
         generalized_tree.get_points_in_polygon(generalized_tree.get_root(), 0, generalized_point_set.get_domain(),
                                                search_window, generalized_point_set, point_list)
-
-        point_list[:] = [k for k in point_list if math.isnan(k.get_z()) is False]
 
         for point in point_list:
             if point != target_sounding:
