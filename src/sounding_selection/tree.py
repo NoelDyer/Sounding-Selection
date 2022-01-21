@@ -4,7 +4,7 @@ from shapely.geometry import Point
 
 
 class Tree(object):
-    """Creates Class tree"""
+    """Creates Class Tree"""
     def __init__(self, c):
         self.__root = Node()
         self.__capacity = c
@@ -22,7 +22,7 @@ class Tree(object):
     def insert_vertex(self, node, node_label, node_domain, v_index, tin):
         if node_domain.contains_point(tin.get_vertex(v_index), tin.get_domain().get_max_point()):
             if node.is_leaf():
-                if node.is_duplicate(v_index,tin):
+                if node.is_duplicate(v_index, tin):
                     return
                 node.add_vertex(v_index)  # update append list
                 if node.overflow(self.__capacity):
@@ -33,11 +33,29 @@ class Tree(object):
                         self.insert_vertex(node, node_label, node_domain, i, tin)
                     node.reset_vertices()  # empty the list of the current node
 
-            else:  # otherwise we are visiting an INTERNAL node
+            else:  # Internal
                 mid_point = node_domain.get_centroid()
                 for i in range(4):
                     s_label, s_domain = node.compute_son_label_and_domain(i, node_label, node_domain, mid_point)
                     self.insert_vertex(node.get_son(i), s_label, s_domain, v_index, tin)
+
+    def build_tin_tree(self, tin):
+        # First insert the vertices of the TIN
+        for i in range(tin.get_vertices_num()):
+            self.insert_vertex(self.__root, 0, tin.get_domain(), i, tin)
+        # Then triangles
+        for i in range(tin.get_triangles_num()):
+            self.insert_triangle(self.__root, 0, tin.get_domain(), i, tin)
+
+    def insert_triangle(self, node, node_label, node_domain, triangle_id, tin):
+        if node_domain.contains_triangle(tin.get_triangle(triangle_id), tin):
+            if node.is_leaf():
+                node.add_triangle(triangle_id)  # update append list
+            else:  # Internal
+                mid_point = node_domain.get_centroid()
+                for i in range(4):
+                    s_label, s_domain = node.compute_son_label_and_domain(i, node_label, node_domain, mid_point)
+                    self.insert_triangle(node.get_son(i), s_label, s_domain, triangle_id, tin)
 
     def generalize(self, node, node_label, node_domain, target_v, point_set, deletes, scale, h_spacing, v_spacing):
         if node is None:
