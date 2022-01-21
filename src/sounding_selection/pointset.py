@@ -25,8 +25,5 @@ class PointSet(object):
     def add_vertex(self, v):
         self.__vertices.append(v)
 
-    def remove_vertex(self, v):
-        self.__vertices.remove(v)
-
     def set_domain(self, min_p, max_p):
         self.__domain = Domain(min_p, max_p)
