@@ -14,11 +14,11 @@ class Node(object):
         self.__vertex_ids = list()  # indices of points
         self.__sons = None
 
-    def add_vertex(self, id):
-        self.__vertex_ids.append(id)
+    def add_vertex(self, v_id):
+        self.__vertex_ids.append(v_id)
 
-    def remove_vertex(self, id):
-        self.__vertex_ids.remove(id)
+    def remove_vertex(self, v_id):
+        self.__vertex_ids.remove(v_id)
 
     def init_sons(self):
         self.__sons = [Node() for _ in range(4)]
