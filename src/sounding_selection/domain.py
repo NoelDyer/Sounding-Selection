@@ -31,7 +31,7 @@ class Domain(object):
                 return False
         return True
 
-    def polygon_intersect(self, polygon):
+    def intersects_polygon(self, polygon):
         node_rectangle = Polygon([(self.__min.get_x(), self.__min.get_y()),
                                   (self.__min.get_x(), self.__max.get_y()),
                                   (self.__max.get_x(), self.__max.get_y()),
@@ -39,7 +39,7 @@ class Domain(object):
 
         return polygon.intersects(node_rectangle)
 
-    def polygon_contains(self, polygon):
+    def contains_polygon(self, polygon):
         node_rectangle = Polygon([(self.__min.get_x(), self.__min.get_y()),
                                   (self.__min.get_x(), self.__max.get_y()),
                                   (self.__max.get_x(), self.__max.get_y()),
@@ -65,14 +65,6 @@ class Domain(object):
                 return False
         return True
 
-    def contains_vertex(self, vertex):
-        """ Function takes type vertex and checks if the domain contains it """
-        """ it considers as 'closed' all the edges of the domain """
-        for i in range(self.__min.get_coordinates_num()):
-            if self.__max.get_c(i) < vertex.get_c(i) or self.__min.get_c(i) > vertex.get_c(i):
-                return False
-        return True
-
     def resize(self, point):  # Need to resize a Domain object only when reading a TIN file
         """ """
         if self.contains_strict(point):
@@ -82,12 +74,6 @@ class Domain(object):
                 self.__min.set_c(i, point.get_c(i))
             if point.get_c(i) > self.__max.get_c(i):
                 self.__max.set_c(i, point.get_c(i))
-
-    def contains_triangle(self, t, tin):
-        for v_pos in range(t.get_vertices_num()):
-            if self.contains_point(tin.get_vertex(t.get_TV(v_pos)), tin.get_domain().get_max_point()):
-                return True
-        return False
 
     def __str__(self):
         return "Domain(%s,%s)" % (self.__min, self.__max)
