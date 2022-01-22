@@ -70,11 +70,11 @@ class Tree(object):
                 mid_point = node_domain.get_centroid()
                 for i in range(4):
                     s_label, s_domain = node.compute_son_label_and_domain(i, node_label, node_domain, mid_point)
-                    if s_domain.polygon_contains(search_window):
+                    if s_domain.contains_polygon(search_window):
                         self.generalize(node.get_son(i), s_label, s_domain, target_v, point_set, deletes, scale,
                                         h_spacing, v_spacing)
                         break
-                    elif s_domain.polygon_intersect(search_window):
+                    elif s_domain.intersects_polygon(search_window):
                         self.generalize(node.get_son(i), s_label, s_domain, target_v, point_set, deletes, scale,
                                         h_spacing, v_spacing)
 
@@ -97,10 +97,10 @@ class Tree(object):
                 mid_point = node_domain.get_centroid()
                 for i in range(4):
                     s_label, s_domain = node.compute_son_label_and_domain(i, node_label, node_domain, mid_point)
-                    if s_domain.polygon_contains(polygon):
+                    if s_domain.contains_polygon(polygon):
                         self.get_points_in_polygon(node.get_son(i), s_label, s_domain, polygon, source_point_set,
                                                    point_list)
                         break
-                    elif s_domain.polygon_intersect(polygon):
+                    elif s_domain.intersects_polygon(polygon):
                         self.get_points_in_polygon(node.get_son(i), s_label, s_domain, polygon, source_point_set,
                                                    point_list)
