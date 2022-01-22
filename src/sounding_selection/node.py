@@ -43,17 +43,17 @@ class Node(object):
 
     def compute_son_label_and_domain(self, son_position, node_label, node_domain, mid_point):
         if son_position == 0:  # "ne":
-            return 4*node_label+1,Domain(mid_point, node_domain.get_max_point())
+            return 4*node_label+1, Domain(mid_point, node_domain.get_max_point())
         elif son_position == 1:  # "nw":
-            min = Point(node_domain.get_min_point().get_x(), mid_point.get_y())
-            max = Point(mid_point.get_x(), node_domain.get_max_point().get_y())
-            return 4*node_label+2,Domain(min, max)
+            minimum = Point(node_domain.get_min_point().get_x(), mid_point.get_y())
+            maximum = Point(mid_point.get_x(), node_domain.get_max_point().get_y())
+            return 4*node_label+2, Domain(minimum, maximum)
         elif son_position == 2:  # "sw":
-            return 4*node_label+3,Domain(node_domain.get_min_point(), mid_point)
+            return 4*node_label+3, Domain(node_domain.get_min_point(), mid_point)
         elif son_position == 3:  # "se":
-            min = Point(mid_point.get_x(), node_domain.get_min_point().get_y())
-            max = Point(node_domain.get_max_point().get_x(), mid_point.get_y())
-            return 4*node_label+4,Domain(min, max)
+            minimum = Point(mid_point.get_x(), node_domain.get_min_point().get_y())
+            maximum = Point(node_domain.get_max_point().get_x(), mid_point.get_y())
+            return 4*node_label+4, Domain(minimum, maximum)
         else:
             return None, None
 
