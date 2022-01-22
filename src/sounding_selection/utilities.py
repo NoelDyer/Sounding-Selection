@@ -18,7 +18,7 @@ def triangulate(vertex_list, boundary_vertices=None, boundary_indexes=None):
         # Constrained
         triangulation = triangle.triangulate({'vertices': boundary_points,
                                               'segments': boundary_indexes},
-                                              'pS0C')  # p: PSLG; S_: Steiner point limit; C: Exact arithmetic
+                                              'pCS0')  # p: PSLG; C: Exact arithmetic; S_: Steiner point limit
 
     else:
         # Delaunay
@@ -67,10 +67,12 @@ def fill_poly_gaps(mqual_poly):
 
         poly = fill_poly.buffer(0)
 
+    colinear_removed = poly.simplify(0)
+
     if poly.geom_type == 'MultiPolygon':
-        final_poly = MultiPolygon(poly.buffer(0))
+        final_poly = MultiPolygon(colinear_removed.buffer(0))
     else:
-        final_poly = Polygon(poly.buffer(0))
+        final_poly = Polygon(colinear_removed.buffer(0))
 
     return final_poly
 
