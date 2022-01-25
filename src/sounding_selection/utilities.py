@@ -4,7 +4,7 @@ from shapely.ops import unary_union
 
 
 def triangulate(vertex_list, boundary_vertices=None, boundary_indexes=None):
-    """ Uses the Python wrapper of Triangle (Shechuck, 1996) to triangulate a set of points. Triangulation is
+    """ Uses a Python wrapper of Triangle (Shechuck, 1996) to triangulate a set of points. Triangulation is
         constrained if bounding vertices are provided; otherwise the triangulation is Delaunay. """
 
     xy_list = [[v.get_x(), v.get_y()] for v in vertex_list]
@@ -30,8 +30,7 @@ def triangulate(vertex_list, boundary_vertices=None, boundary_indexes=None):
 def fill_poly_gaps(mqual_poly):
     """ Fills gaps in MultiPolygons/Polygons by rebuilding the geometry from the exterior coordinates of each polygon
         and then using a bounding rectangle of the new polygons to eliminate any remaining gaps that can occur from
-        touching polygon edges. Finally, removes co-linear vertices that can lead to precision issues during
-        triangulation, which can cause boundary segments to be split. """
+        touching polygon edges. """
 
     parts = list()
     if mqual_poly.geom_type == 'MultiPolygon':
@@ -67,12 +66,10 @@ def fill_poly_gaps(mqual_poly):
 
         poly = fill_poly.buffer(0)
 
-    colinear_removed = poly.simplify(0)
-
     if poly.geom_type == 'MultiPolygon':
-        final_poly = MultiPolygon(colinear_removed.buffer(0))
+        final_poly = MultiPolygon(poly)
     else:
-        final_poly = Polygon(colinear_removed.buffer(0))
+        final_poly = Polygon(poly)
 
     return final_poly
 
