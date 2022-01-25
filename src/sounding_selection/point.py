@@ -42,3 +42,6 @@ class Point(object):
 
     def __str__(self):
         return "Point(%s,%s)" % (self.get_x(), self.get_y())
+    
+    def __hash__(self):
+        return hash(('x', self.__coords[0], 'y', self.__coords[1]))
