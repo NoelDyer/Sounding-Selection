@@ -56,10 +56,14 @@ class Tree(object):
                             s_point = Point(v.get_x(), v.get_y())
                             if search_window.intersects(s_point):
                                 target_label = get_character_dimensions(target_v, scale, h_spacing, v_spacing)[1]
-                                v_label = get_character_dimensions(v, scale, h_spacing, v_spacing)[1]
-                                if target_label.intersects(v_label) and target_v.get_z() < v.get_z():
+                                if target_label.intersects(s_point) and target_v.get_z() < v.get_z():
                                     # z-value precision issue: use '<=' to remove initial legibility violations
                                     delete_list[v_id] = v
+                                else:
+                                    v_label = get_character_dimensions(v, scale, h_spacing, v_spacing)[1]
+                                    if target_label.intersects(v_label) and target_v.get_z() < v.get_z():
+                                        # z-value precision issue: use '<=' to remove initial legibility violations
+                                        delete_list[v_id] = v
 
                     for v_id in delete_list:
                         node.remove_vertex(v_id)
