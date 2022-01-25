@@ -1,11 +1,10 @@
 import datetime
-
-from sounding_selection.utilities import *
-from sounding_selection.reader import Reader
-from sounding_selection.writer import Writer
-from sounding_selection.tree import Tree
-from sounding_selection.validation import *
-from sounding_selection.logger import log
+from utilities import *
+from reader import Reader
+from writer import Writer
+from tree import Tree
+from validation import *
+from logger import log
 from shapely.geometry import Point
 from timeit import default_timer as timer
 
@@ -48,7 +47,7 @@ def main():
 
         log.info('\t-Extracting Boundary Points')
         boundary_vertices, boundary_idx = get_boundary_points(m_qual_poly, source_point_set, source_tree)
-        # writer.write_xyz_file('M_QUAL_Boundarypoints', boundary_vertices)
+        writer.write_xyz_file('M_QUAL_Boundarypoints', boundary_vertices)
 
     else:
         boundary_vertices = None
@@ -141,7 +140,14 @@ def main():
 
                 i += 1
 
+            # Combine adjusted generalized soundings with remaining violations
+            for violation in functionality_violations:
+                if violation not in generalized_soundings:
+                    generalized_soundings.append(violation)
+
             # Re-triangulate updated generalized soundings
+            boundary_pointset = reader.read_xyz_file('M_QUAL_Boundarypoints.txt')
+            boundary_vertices = boundary_pointset.get_all_vertices()
             tri = triangulate(generalized_soundings, boundary_vertices, boundary_idx)
 
             # Iteration of functionality (safety) constraint evaluation
@@ -150,9 +156,6 @@ def main():
             functionality_violations = validate_functionality_constraint(generalized_tin, validation_source_tree,
                                                                          source_point_set, scale, horiz_spacing,
                                                                          vert_spacing)
-
-            # Combine adjusted generalized soundings with remaining violations
-            generalized_soundings.extend(functionality_violations)
 
             iteration_count += 1
             log.info('\t--Iteration Count: ' + str(iteration_count))
