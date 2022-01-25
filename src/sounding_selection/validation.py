@@ -1,4 +1,4 @@
-from characterdimensions import get_character_dimensions
+from sounding_selection.characterdimensions import get_character_dimensions
 from shapely.geometry import Polygon
 
 
