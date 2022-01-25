@@ -1,4 +1,4 @@
-from sounding_selection.characterdimensions import get_character_dimensions
+from characterdimensions import get_character_dimensions
 from shapely.geometry import Polygon
 
 
@@ -23,8 +23,7 @@ def validate_functionality_constraint(generalized_tin, source_tree, source_point
 
         shallow_in_triangle = sorted(point_list, key=lambda k: k.get_z())[0]
         shallow_z = sorted(z_vals, key=lambda k: k.get_z())[0]
-        if get_character_dimensions(shallow_in_triangle, scale, h_spacing, v_spacing)[2] < \
-           get_character_dimensions(shallow_z, scale, h_spacing, v_spacing)[2]:
+        if shallow_in_triangle.get_z() < shallow_z.get_z():
             safety_violations.append(shallow_in_triangle)
 
     return safety_violations
