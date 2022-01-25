@@ -1,10 +1,10 @@
 import datetime
-from utilities import *
-from reader import Reader
-from writer import Writer
-from tree import Tree
-from validation import *
-from logger import log
+from sounding_selection.utilities import *
+from sounding_selection.reader import Reader
+from sounding_selection.writer import Writer
+from sounding_selection.tree import Tree
+from sounding_selection.validation import *
+from sounding_selection.logger import log
 from shapely.geometry import Point
 from timeit import default_timer as timer
 
