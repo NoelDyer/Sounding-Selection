@@ -47,7 +47,7 @@ def main():
 
         log.info('\t-Extracting Boundary Points')
         boundary_vertices, boundary_idx = get_boundary_points(m_qual_poly, source_point_set, source_tree)
-        writer.write_xyz_file('M_QUAL_Boundarypoints', boundary_vertices)
+        writer.write_xyz_file('MQUAL_Boundary_Points', boundary_vertices)
 
     else:
         boundary_vertices = None
@@ -147,7 +147,7 @@ def main():
                     generalized_soundings.append(violation)
 
             # Re-triangulate updated generalized soundings
-            boundary_pointset = reader.read_xyz_file('M_QUAL_Boundarypoints.txt')
+            boundary_pointset = reader.read_xyz_file('MQUAL_Boundary_Points.txt')
             boundary_vertices = boundary_pointset.get_all_vertices()
             tri = triangulate(generalized_soundings, boundary_vertices, boundary_idx)
 
