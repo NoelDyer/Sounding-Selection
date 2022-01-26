@@ -69,7 +69,8 @@ def main():
                                source_point_set, deletes, scale, horiz_spacing, vert_spacing)
         # Delete generalized soundings from sorted points list
         for i in deletes:
-            sorted_points.remove(i)
+            delete_idx = modified_binary_search(sorted_points, i)
+            del sorted_points[delete_idx]
         generalized_soundings.append(sorted_points[0])
         del sorted_points[0]
 
