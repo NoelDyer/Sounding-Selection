@@ -181,3 +181,33 @@ def simplify_mqual(triangulation, mqual_poly):
         simp_poly = Polygon(tin_shape.buffer(0))
 
     return simp_poly
+
+
+def modified_binary_search(sorted_vertices, vertex):
+    """ Modified binary search algorithm to increase performance when removing soundings during the
+        label-based generalization. """
+    
+    right, left = 0, 0
+    vertices_num = len(sorted_vertices)
+
+    while right < vertices_num:
+        i = (right + vertices_num) // 2
+        if vertex.get_z() < sorted_vertices[i].get_z():
+            vertices_num = i
+        else:
+            right = i + 1
+
+    vertices_num = right - 1
+    while left < vertices_num:
+        i = (left + vertices_num) // 2
+        if vertex.get_z() > sorted_vertices[i].get_z():
+            left = i + 1
+        else:
+            vertices_num = i
+
+    if left == right-1:
+        return left
+    else:
+        for idx in range(left, right):
+            if sorted_vertices[idx] == vertex:
+                return idx
