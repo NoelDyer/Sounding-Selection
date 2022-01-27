@@ -178,7 +178,7 @@ def main():
     log.info('-Writing Label Polygon Files')
     for vertex in generalized_soundings:
         target_label = get_character_dimensions(vertex, scale, horiz_spacing, vert_spacing)[1]
-        writer.write_wkt_file(out_name + r'_label_wkt.txt', target_label.wkt)
+        writer.write_wkt_file(out_name + r'_label_wkt.txt', target_label)
         # window = get_character_dimensions(vertex, scale, horiz_spacing, vert_spacing)[0]
         # writer.write_wkt_file(out_name + r'_window_wkt.txt', window.wkt)
 
