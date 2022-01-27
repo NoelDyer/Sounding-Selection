@@ -176,10 +176,6 @@ def main():
 
     # Write label dimension files
     log.info('-Writing Label Polygon Files')
-    wkt_file = open(out_name + r'_label_wkt.txt', 'w+')
-    wkt_file.close()
-    # window_file = open(out_name + r'_window_wkt.txt', 'w+')
-    # window_file.close()
     for vertex in generalized_soundings:
         target_label = get_character_dimensions(vertex, scale, horiz_spacing, vert_spacing)[1]
         writer.write_wkt_file(out_name + r'_label_wkt.txt', target_label.wkt)
