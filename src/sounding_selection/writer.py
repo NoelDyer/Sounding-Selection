@@ -14,13 +14,7 @@ class Writer(object):
 
     def write_wkt_file(self, file_name, wkt):
         outfile_wkt = open(file_name, 'a+')
-
-        if wkt.geom_type == 'MultiPolygon':
-            for geom in wkt.geoms:
-                outfile_wkt.write(str(geom) + '\n')
-        elif wkt.geom_type == 'Polygon':
-            outfile_wkt.write(str(wkt) + '\n')
-        
+        outfile_wkt.write(str(wkt) + '\n')
         outfile_wkt.close()
         return
 
