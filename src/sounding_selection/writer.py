@@ -13,7 +13,7 @@ class Writer(object):
         return
 
     def write_wkt_file(self, file_name, wkt):
-        outfile_wkt = open(file_name, 'w')
+        outfile_wkt = open(file_name, 'a+')
         outfile_wkt.write(str(wkt) + '\n')
         outfile_wkt.close()
         return
