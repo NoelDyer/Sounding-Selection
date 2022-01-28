@@ -2,7 +2,7 @@ from sounding_selection.characterdimensions import get_character_dimensions
 from shapely.geometry import Polygon
 
 
-def validate_functionality_constraint(generalized_tin, source_tree, source_point_set, scale, h_spacing, v_spacing):
+def validate_functionality_constraint(generalized_tin, source_tree, source_point_set):
     safety_violations = list()
 
     for t_id in range(generalized_tin.get_triangles_num()):
