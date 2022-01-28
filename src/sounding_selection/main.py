@@ -43,7 +43,7 @@ def main():
 
         log.info('\t-Removing Polygon Holes')
         m_qual_poly = fill_poly_gaps(simplified_mqual)
-        # writer.write_wkt_file('Gap_Filled_MQUAL.txt', m_qual_poly)
+        writer.write_wkt_file('Simplified_MQUAL.txt', m_qual_poly)
 
         log.info('\t-Extracting Boundary Points')
         boundary_vertices, boundary_idx = get_boundary_points(m_qual_poly, source_point_set, source_tree)
