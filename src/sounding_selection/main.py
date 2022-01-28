@@ -103,7 +103,7 @@ def main():
 
     # First evaluation of functionality (safety) constraint
     functionality_violations = validate_functionality_constraint(generalized_tin, validation_source_tree,
-                                                                 source_point_set, scale, horiz_spacing, vert_spacing)
+                                                                 source_point_set)
 
     # First evaluation of legibility constraint
     legibility_violations = validate_legibility_constraint(generalized_soundings, source_tree, source_point_set, scale,
