@@ -54,10 +54,7 @@ def fill_poly_gaps(mqual_poly):
         poly = fill_poly.buffer(0)
 
     else:
-        p = mqual_poly.exterior.coords
-        parts.append(p)
-
-        dissolve_poly = unary_union(parts)
+        dissolve_poly = unary_union(mqual_poly)
         xmin, ymin, xmax, ymax = dissolve_poly.bounds
         bounding_rect = Polygon([(xmin, ymin), (xmin, ymax), (xmax, ymax), (xmax, ymin)]).buffer(1, resolution=1)
 
