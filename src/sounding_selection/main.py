@@ -149,20 +149,18 @@ def main():
                 if violation not in generalized_soundings:
                     generalized_soundings.append(violation)
 
-            # Re-triangulate updated generalized soundings
-            boundary_pointset = reader.read_xyz_file('MQUAL_Boundary_Points.txt')
-            boundary_vertices = boundary_pointset.get_all_vertices()
-            tri = triangulate(generalized_soundings, boundary_vertices, boundary_idx)
-
             # Iteration of functionality (safety) constraint evaluation
             if boundary_vertices is not None:
+                boundary_pointset = reader.read_xyz_file('MQUAL_Boundary_Points.txt')
+                boundary_vertices = boundary_pointset.get_all_vertices()
                 combined = generalized_soundings + boundary_vertices
             else:
                 combined = generalized_soundings
+
+            tri = triangulate(generalized_soundings, boundary_vertices, boundary_idx)
             generalized_tin = reader.read_triangulation(tri, combined)
             functionality_violations = validate_functionality_constraint(generalized_tin, validation_source_tree,
-                                                                         source_point_set, scale, horiz_spacing,
-                                                                         vert_spacing)
+                                                                         source_point_set)
 
             iteration_count += 1
             log.info('\t--Iteration Count: ' + str(iteration_count))
