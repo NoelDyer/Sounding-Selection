@@ -93,7 +93,10 @@ def main():
     tri = triangulate(generalized_soundings, boundary_vertices, boundary_idx)
 
     # Read tin into class
-    combined = generalized_soundings + boundary_vertices
+    if boundary_vertices is not None:
+        combined = generalized_soundings + boundary_vertices
+    else:
+        combined = generalized_soundings
     generalized_tin = reader.read_triangulation(tri, combined)
     out_name = str(source_soundings).split('.')[0] + '_Generalized'
     writer.write_tin_file(generalized_tin, out_name + '_Initial_TIN')
@@ -152,7 +155,10 @@ def main():
             tri = triangulate(generalized_soundings, boundary_vertices, boundary_idx)
 
             # Iteration of functionality (safety) constraint evaluation
-            combined = generalized_soundings + boundary_vertices
+            if boundary_vertices is not None:
+                combined = generalized_soundings + boundary_vertices
+            else:
+                combined = generalized_soundings
             generalized_tin = reader.read_triangulation(tri, combined)
             functionality_violations = validate_functionality_constraint(generalized_tin, validation_source_tree,
                                                                          source_point_set, scale, horiz_spacing,
