@@ -158,8 +158,9 @@ def simplify_mqual(triangulation, mqual_poly):
 
     tin_shape = unary_union(tin_triangles)
 
-    # Delete triangles from shape
-    for delete_poly in delete_triangles:
+    # Delete triangles from shape, beginning with largest area
+    sorted_del_triangles = sorted(delete_triangles, key=lambda k: k.area, reverse=True)
+    for delete_poly in sorted_del_triangles:
         x, y = delete_poly.exterior.coords.xy
         delete_tri_points = list()
         for i in range(len(x) - 1):
@@ -173,11 +174,15 @@ def simplify_mqual(triangulation, mqual_poly):
             tin_shape = unary_union([tin_shape, delete_poly])
 
     if tin_shape.geom_type == 'MultiPolygon':
-        simp_poly = MultiPolygon(tin_shape.buffer(0))
+        final_poly = list()
+        for geom in tin_shape.geoms:
+            if mqual_poly.intersects(geom.centroid) is True:
+                final_poly.append(geom)
+        poly = MultiPolygon(final_poly).buffer(0)
     else:
-        simp_poly = Polygon(tin_shape.buffer(0))
+        poly = Polygon(tin_shape.buffer(0))
 
-    return simp_poly
+    return poly
 
 
 def modified_binary_search(sorted_vertices, vertex):
