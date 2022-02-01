@@ -170,7 +170,7 @@ def simplify_mqual(triangulation, mqual_poly):
         # Check to ensure removed triangle does not exclude source soundings from simplified polygon
         intersect_check = [point.intersects(tin_shape) for point in delete_tri_points]
         if False in intersect_check:
-            tin_shape.unary_union(delete_poly)
+            tin_shape = unary_union([tin_shape, delete_poly])
 
     if tin_shape.geom_type == 'MultiPolygon':
         simp_poly = MultiPolygon(tin_shape.buffer(0))
