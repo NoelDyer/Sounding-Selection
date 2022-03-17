@@ -101,7 +101,7 @@ class Reader(object):
         xy_list = [[float(v.get_x()), float(v.get_y())] for v in vertex_list]
 
         tin = TIN()
-        for index, value in enumerate(vertices):
+        for i, value in enumerate(vertices):
             if [float(value[0]), float(value[1])] in xy_list:
                 index = xy_list.index([float(value[0]), float(value[1])])
                 sounding = vertex_list[index]
@@ -111,7 +111,7 @@ class Reader(object):
                 v = Vertex(float(value[0]), float(value[1]), float('NaN'))
 
             tin.add_vertex(v)
-            if index == 0:
+            if i == 0:
                 tin.set_domain(v, v)
             else:
                 tin.get_domain().resize(v)
