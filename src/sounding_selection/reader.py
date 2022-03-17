@@ -101,20 +101,19 @@ class Reader(object):
         xy_list = [[float(v.get_x()), float(v.get_y())] for v in vertex_list]
 
         tin = TIN()
-        for i, value in enumerate(vertices):
-            if [float(value[0]), float(value[1])] in xy_list:
-                index = xy_list.index([float(value[0]), float(value[1])])
-                sounding = vertex_list[index]
-                v = Vertex(float(sounding.get_x()), float(sounding.get_y()), float(sounding.get_z()))
-            else:
-                log.error('Vertex: {}, {} Not Present in Source Soundings'.format(str(value[0]), str(value[1])))
-                v = Vertex(float(value[0]), float(value[1]), float('NaN'))
+        for i, v in enumerate(vertices):
+            index = xy_list.index([float(v[0]), float(v[1])])
+            sounding = vertex_list[index]
+            vert = Vertex(float(sounding.get_x()), float(sounding.get_y()), float(sounding.get_z()))
 
-            tin.add_vertex(v)
+            del xy_list[index]
+            del vertex_list[index]
+
+            tin.add_vertex(vert)
             if i == 0:
-                tin.set_domain(v, v)
+                tin.set_domain(vert, vert)
             else:
-                tin.get_domain().resize(v)
+                tin.get_domain().resize(vert)
 
         for tri in triangles:
             t = Triangle(int(tri[0]), int(tri[1]), int(tri[2]))
