@@ -98,16 +98,17 @@ class Reader(object):
         vertices = triangulation['vertices']
         triangles = triangulation['triangles']
 
-        xy_list = [[float(v.get_x()), float(v.get_y())] for v in vertex_list]
+        v_list = vertex_list[:]
+        xy_list = [[float(v.get_x()), float(v.get_y())] for v in v_list]
 
         tin = TIN()
         for i, v in enumerate(vertices):
             index = xy_list.index([float(v[0]), float(v[1])])
-            sounding = vertex_list[index]
+            sounding = v_list[index]
             vert = Vertex(float(sounding.get_x()), float(sounding.get_y()), float(sounding.get_z()))
 
             del xy_list[index]
-            del vertex_list[index]
+            del v_list[index]
 
             tin.add_vertex(vert)
             if i == 0:
