@@ -3,6 +3,7 @@ Cartographic sounding selection is a constraint-based bathymetric generalization
 
 ### Reference Papers ###
 + Dyer, N., Kastrisios, C., & De Floriani, L. (2023). Chart Features, Data Quality, and Scale in Cartographic Sounding Selection from Composite Bathymetric Data. Geo-spatial Information Science. DOI: https://doi.org/10.1080/10095020.2023.2266222
++ Kastrisios, C., Dyer, N., Nada, T., Stilianos, C., & Cordero, J. (2023). Increasing Efficiency of Nautical Chart Production and Accessibility to Marine Environment Data Through an Open-Science Compilation Workflow. ISPRS International Journal of Geo-Information, 12(3), 116. DOI: https://doi.org/10.3390/ijgi12030116
 + Dyer, N., Kastrisios, C., & De Floriani, L. (2022). Label-based generalization of bathymetry data for hydrographic sounding selection. Cartography and Geographic Information Science, 49(4), 338-353. DOI: https://doi.org/10.1080/15230406.2021.2014974
 
 ### Installation ###
