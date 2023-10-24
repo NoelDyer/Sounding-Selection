@@ -13,28 +13,27 @@ python setup.py install  # installs to current Python environment (including req
 ```
 You should then be able to execute the program from the command line as such:
 ```
-sounding_selection -i path\to\data\Bathymetry_xyz.txt -s 25000 -m path\to\data\Bathymetry_Boundary.txt
+python main.py -i Source_Soundings_xyzc.txt -c ENC_Soundings_xyzc.txt -r 40000 -v triangle -d DepthsL_Contours.shp -a DepthsA_Areas.shp -n DangersP.shp -s 43.03 -e 1309.28
 ```
 Example data file formats can be found in the ```data``` directory.
 
 ### Parameters Description ###
 ```
--i <inputfile> -s <scale> -m <m_qual> -x <horizontal_spacing> -y <vertical_spacing>
+ -i <inputfile> -r <scale> -v <validation> -c <chart_soundings> -a <depth_areas> -d <depth_contours> -n <dangers_to_navigation> -s <starting_radius_length> -e <ending_radius_length> -x <horizontal_spacing> -y <vertical_spacing>
 ```
-```-i``` *Input Soundings File* | **Required** | X,Y,Z Text File Format</br>
-```-s``` *Scale* | **Required** | Integer</br>
-```-c``` *Current ENC Soundings* | **Required** | X,Y,Z Text File Format</br>
+```-i``` *Input Soundings File* | **Required** | X,Y,Z,C Text File Format</br>
+```-r``` *Scale* | **Required** | Integer</br>
+```-v``` *Safety Validation Method* | **Required** | TRIANGLE or SURFACE String</br>
+```-c``` *Current ENC Soundings* | **Required** | X,Y,Z,C Text File Format</br>
 ```-a``` *DepthsA Polygons* | **Required** | Polygon Shapefile in S-57 Attributes</br>
 ```-d``` *DepthsL Polylines* | **Required** | Polyline Shapefile in S-57 Attributes</br>
 ```-n``` *DangersP Points* | **Required** | Point Shapefile with S-57 Attributes</br>
-```-v``` *Safety Validation Method* | **Required** | TRIANGLE or SURFACE String</br>
 ```-s``` *Starting Radius Length* | **Required** | Starting Radius Length for Fill Soundings</br>
 ```-e``` *Ending Radius Length* | **Required** | Ending Radius Length for Fill Soundings</br>
 ```-x``` *Horizontal Spacing Between Labels* | **Optional** | Float</br>
 ```-y``` *Vertical Spacing Between Labels* | **Optional** | Float</br>
 
 **Notes:**
-<p>When a survey polygon is provided, the triangulation performed for validation (see reference paper) is constrained to the polygon. If it is not provided, the triangulation is Delaunay.</p>
 <p>A default horizontal/vertical spacing of 0.75 mm to the scale is used unless a different value is provided.</p>
 An output log file is also created during execution.
 
