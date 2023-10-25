@@ -1,4 +1,4 @@
-from from sounding_selection.catzoc import *domain import Domain
+from sounding_selection.domain import Domain
 
 
 class PointSet(object):
