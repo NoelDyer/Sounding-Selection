@@ -13,7 +13,7 @@ python setup.py install  # installs to current Python environment (including req
 ```
 You should then be able to execute the program from the command line as such:
 ```
-python main.py -i Source_Soundings_xyzc.txt -c ENC_Soundings_xyzc.txt -r 40000 -v triangle -d DepthsL_Contours.shp -a DepthsA_Areas.shp -n DangersP.shp -s 43.03 -e 1309.28
+python main.py -i Source_Soundings_xyzc.txt -c ENC_Soundings_xyzc.txt -r 40000 -v triangle -d DepthsL_Contours.shp -a DepthsA_Areas.shp -n DangersP_Points.shp -s 43.03 -e 1309.28
 ```
 Example data file formats can be found in the ```data``` directory.
 
