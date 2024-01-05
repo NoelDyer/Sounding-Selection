@@ -25,8 +25,8 @@ Example data file formats can be found in the ```data``` directory.
 ```-r``` *Scale* | **Required** | Integer</br>
 ```-v``` *Safety Validation Method* | **Required** | TRIANGLE or SURFACE String</br>
 ```-c``` *Current ENC Soundings* | **Required** | X,Y,Z,C Text File Format</br>
-```-a``` *DepthsA Polygons* | **Required** | Polygon Shapefile in S-57 Attributes</br>
-```-d``` *DepthsL Polylines* | **Required** | Polyline Shapefile in S-57 Attributes</br>
+```-a``` *DepthsA Polygons* | **Required** | Polygon Shapefile with S-57 Attributes</br>
+```-d``` *DepthsL Polylines* | **Required** | Polyline Shapefile with S-57 Attributes</br>
 ```-n``` *DangersP Points* | **Required** | Point Shapefile with S-57 Attributes</br>
 ```-s``` *Starting Radius Length* | **Required** | Starting Radius Length for Fill Soundings</br>
 ```-e``` *Ending Radius Length* | **Required** | Ending Radius Length for Fill Soundings</br>
