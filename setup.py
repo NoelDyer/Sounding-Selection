@@ -6,7 +6,7 @@ long_description = (cwd / 'README.md').read_text(encoding='utf-8')
 
 setup(name='sounding_selection',
       version='1.0.0',
-      description='Label-Based Method for Hydrographic Sounding Selection',
+      description='Cartographic Sounding Selection',
       license='MIT',
       long_description=long_description,
       author='Noel Dyer',
